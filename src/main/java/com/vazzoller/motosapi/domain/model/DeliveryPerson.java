@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,14 +34,12 @@ public class DeliveryPerson extends BaseEntity{
     private LocalDate birthDate;
 
     @Column(nullable = false, unique = true)
-    @Length(min = 9, max = 9)
     private Long cnhNumber;
 
     @Column(nullable = false)
     private DriversLicenseTypeEnum licenseType;
 
-    @Column(nullable = false)
-    @NotBlank
+    @Column()
     private String cnhImageUrl;
 
     @OneToMany(mappedBy = "deliveryPerson")
@@ -58,7 +55,10 @@ public class DeliveryPerson extends BaseEntity{
     }
 
     public void addRental(Rentals rental) {
+        if(this.licenseType.equals(DriversLicenseTypeEnum.B)){
+                throw new IllegalArgumentException("Moto não pode ser alugada para entregadores com CNH B");
+        }
+
         rentals.add(rental);
-        rental.setDeliveryPerson(this);
     }
 }
