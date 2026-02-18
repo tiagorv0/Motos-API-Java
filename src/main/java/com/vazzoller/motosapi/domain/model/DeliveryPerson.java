@@ -56,9 +56,4 @@ public class DeliveryPerson extends BaseEntity{
         this.cnhNumber = cnhNumber;
         this.licenseType = licenseType;
     }
-
-    public void addRental(Rentals rental) {
-        rentals.add(rental);
-        rental.setDeliveryPerson(this);
-    }
 }
