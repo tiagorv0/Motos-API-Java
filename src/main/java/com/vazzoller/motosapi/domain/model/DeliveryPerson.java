@@ -53,12 +53,4 @@ public class DeliveryPerson extends BaseEntity{
         this.cnhNumber = cnhNumber;
         this.licenseType = licenseType;
     }
-
-    public void addRental(Rentals rental) {
-        if(this.licenseType.equals(DriversLicenseTypeEnum.B)){
-                throw new IllegalArgumentException("Moto não pode ser alugada para entregadores com CNH B");
-        }
-
-        rentals.add(rental);
-    }
 }
