@@ -13,7 +13,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("My REST API").version("1.0.0"))
+                .info(new Info().title("Motos API").version("1.0.0"))
                 .addSecurityItem(new SecurityRequirement().addList("ApiKeyAuth"))
                 .components(new Components().addSecuritySchemes("ApiKeyAuth", createAPIKeyScheme()));
     }
