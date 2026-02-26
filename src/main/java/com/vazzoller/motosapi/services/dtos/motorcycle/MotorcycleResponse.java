@@ -3,10 +3,11 @@ package com.vazzoller.motosapi.services.dtos.motorcycle;
 import com.vazzoller.motosapi.domain.model.Motorcycle;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
-public class MotorcycleResponse {
+public class MotorcycleResponse implements Serializable {
     private String identifier;
     private Integer year;
     private String model;

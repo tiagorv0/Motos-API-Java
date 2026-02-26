@@ -2,6 +2,7 @@ package com.vazzoller.motosapi.domain.model;
 
 import com.vazzoller.motosapi.domain.enums.DriversLicenseTypeEnum;
 import com.vazzoller.motosapi.domain.enums.PlanEnum;
+import com.vazzoller.motosapi.domain.exception.BusinessException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,7 +53,7 @@ public class Rentals extends BaseEntity {
 
     public Rentals(LocalDate startDate, LocalDate endDate, LocalDate otherEndDate, PlanEnum plan, Motorcycle motorcycle, DeliveryPerson deliverPerson){
         if(deliverPerson.getLicenseType().equals(DriversLicenseTypeEnum.B)){
-            throw new IllegalArgumentException("Moto não pode ser alugada para entregadores com CNH B");
+            throw new BusinessException("Moto não pode ser alugada para entregadores com CNH B");
         }
 
         this.startDate = startDate;
@@ -66,7 +67,7 @@ public class Rentals extends BaseEntity {
     public void calculateRental(LocalDate devolutionDate){
 
         if(devolutionDate.isBefore(startDate)){
-            throw new IllegalArgumentException("A data de devolução não pode ser anterior à data de início da locação");
+            throw new BusinessException("A data de devolução não pode ser anterior à data de início da locação");
         }
 
         this.devolutionDate = devolutionDate;
