@@ -5,6 +5,7 @@ import com.vazzoller.motosapi.domain.exception.ResourceNotFoundException;
 import com.vazzoller.motosapi.domain.model.Motorcycle;
 import com.vazzoller.motosapi.domain.repository.MotorcycleRepository;
 import com.vazzoller.motosapi.domain.specification.MotorcycleSpecification;
+import com.vazzoller.motosapi.messaging.producer.MessageProducer;
 import com.vazzoller.motosapi.services.dtos.motorcycle.MotorcycleInputDTO;
 import com.vazzoller.motosapi.services.dtos.motorcycle.MotorcycleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class AdminMotorcycleService {
     @Autowired
     private MotorcycleRepository motorcycleRepository;
 
+    @Autowired
+    private MessageProducer messageProducer;
+
     public MotorcycleResponse createMotorcycle(MotorcycleInputDTO dto){
 
         if(motorcycleRepository.existsByPlateAndActiveTrue(dto.getPlate())){
@@ -29,6 +33,10 @@ public class AdminMotorcycleService {
         }
         var motorcycle = new Motorcycle(dto.getIdentifier(), dto.getYear(), dto.getModel(), dto.getPlate());
         motorcycleRepository.save(motorcycle);
+
+        if (Integer.valueOf(2024).equals(dto.getYear())) {
+            messageProducer.send("motorcycle.year.2024.created", new MotorcycleResponse().toResponse(motorcycle));
+        }
 
         return new MotorcycleResponse().toResponse(motorcycle);
     }
